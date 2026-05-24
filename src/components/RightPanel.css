@@ -1,0 +1,142 @@
+.right-panel {
+  width: 360px;
+  display: flex; flex-direction: column; gap: 12px;
+  animation: slideInRight 0.8s ease-out 0.5s both;
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Gem bar ── */
+.gem-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-panel);
+  border-radius: 14px;
+  border: 1px solid rgba(160,240,255,0.15);
+  padding: 10px 16px;
+  backdrop-filter: blur(10px);
+}
+.gem-bar-icon { font-size: 18px; }
+.gem-bar-count {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #a0f0ff;
+}
+.gem-bar-rate {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+/* ── Gem shop ── */
+.gem-shop-panel {
+  background: rgba(0,240,255,0.04);
+  border: 1px solid rgba(0,240,255,0.12);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 4px;
+}
+.gem-shop-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px;
+  color: #a0f0ff;
+  margin-bottom: 10px;
+}
+.gem-shop-row {
+  display: flex;
+  gap: 8px;
+}
+.gem-buy-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,240,255,0.25);
+  background: rgba(0,240,255,0.07);
+  color: #a0f0ff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1.5;
+  text-align: center;
+}
+.gem-buy-btn:hover:not(.cant-afford) {
+  background: rgba(0,240,255,0.18);
+  box-shadow: 0 0 14px rgba(0,240,255,0.2);
+  transform: translateY(-1px);
+}
+.gem-buy-btn.cant-afford { opacity: 0.35; cursor: not-allowed; }
+.gem-buy-cost {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.tab-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--bg-panel);
+  border-radius: 16px; padding: 5px;
+  border: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  gap: 2px;
+}
+.tab-btn {
+  flex: 1; padding: 8px 4px; border: none;
+  background: transparent; color: var(--text-secondary);
+  font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; cursor: pointer;
+  border-radius: 12px; transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.tab-btn:hover  { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(123,47,255,0.2));
+  color: var(--accent-1); box-shadow: 0 0 15px rgba(0,240,255,0.1);
+}
+
+/* Skin grid */
+.skin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.skin-card {
+  background: var(--bg-panel); border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 14px; text-align: center; cursor: pointer;
+  transition: all 0.3s ease; position: relative;
+}
+.skin-card:hover  { transform: translateY(-3px); border-color: rgba(0,240,255,0.3); }
+.skin-card.active { border-color: var(--accent-1); box-shadow: 0 0 15px rgba(0,240,255,0.2); background: rgba(0,240,255,0.05); }
+.skin-card.locked { opacity: 0.6; cursor: not-allowed; }
+.skin-preview { width: 60px; height: 60px; margin: 0 auto 8px; }
+.skin-preview svg { width: 100%; height: 100%; }
+.skin-name  { font-weight: 700; font-size: 13px; margin-bottom: 4px; color: var(--text-primary); }
+.skin-price { font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--accent-4); }
+.skin-owned { font-size: 11px; color: #00ff00; font-weight: 700; }
+
+/* Custom skin editor */
+.custom-editor {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-top: 10px; padding: 10px;
+  background: rgba(0,0,0,0.2); border-radius: 10px;
+}
+.color-picker-row { display: flex; align-items: center; justify-content: space-between; }
+.color-picker-label { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+input[type="color"] { width: 44px; height: 26px; border: none; border-radius: 5px; cursor: pointer; background: none; }
+.apply-skin-btn {
+  padding: 8px; border-radius: 8px;
+  border: 1px solid var(--accent-1);
+  background: rgba(0,240,255,0.1); color: var(--accent-1);
+  font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.3s;
+}
+.apply-skin-btn:hover { background: rgba(0,240,255,0.3); }
+
+@media (max-width: 900px) {
+  .right-panel { width: 100%; max-width: 520px; }
+}

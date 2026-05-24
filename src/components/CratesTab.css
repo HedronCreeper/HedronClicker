@@ -1,0 +1,112 @@
+.crates-section {
+  background: var(--bg-panel);
+  border-radius: 16px;
+  border: 1px solid rgba(255,215,0,0.15);
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+.crates-header {
+  font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px;
+  text-align: center; margin-bottom: 15px;
+  color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.3);
+}
+.crate-card {
+  background: rgba(255,215,0,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,215,0,0.15);
+  padding: 20px; text-align: center; cursor: pointer;
+  transition: all 0.3s ease;
+}
+.crate-card:hover:not(.cant-afford-crate) {
+  border-color: rgba(255,215,0,0.4);
+  box-shadow: 0 0 25px rgba(255,215,0,0.15);
+  transform: translateY(-2px);
+}
+.crate-card.cant-afford-crate { opacity: 0.4; cursor: not-allowed; }
+.crate-icon {
+  font-size: 48px; margin-bottom: 8px;
+  display: block;
+  animation: crateBob 3s ease-in-out infinite;
+}
+.crate-icon.opening { animation: crateOpen 0.8s ease; }
+@keyframes crateBob {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  25%     { transform: translateY(-5px) rotate(-2deg); }
+  75%     { transform: translateY(-5px) rotate(2deg); }
+}
+@keyframes crateOpen {
+  0%   { transform: scale(1) rotate(0deg); }
+  20%  { transform: scale(1.2) rotate(-10deg); }
+  40%  { transform: scale(1.2) rotate(10deg); }
+  60%  { transform: scale(1.3) rotate(-5deg); filter: brightness(2); }
+  80%  { transform: scale(0.8) rotate(5deg); filter: brightness(3); }
+  100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+.crate-name { font-weight: 700; font-size: 14px; color: #ffd700; margin-bottom: 4px; }
+.crate-cost { font-family: 'Orbitron', sans-serif; font-size: 12px; color: var(--mod-key-color, #ffd700); opacity: 0.8; margin-bottom: 12px; }
+.open-crate-btn {
+  padding: 8px 20px; border-radius: 10px;
+  border: 1px solid rgba(255,215,0,0.4);
+  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1));
+  color: #ffd700;
+  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 1px;
+  cursor: pointer; transition: all 0.3s ease;
+}
+.open-crate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.open-crate-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2));
+  box-shadow: 0 0 20px rgba(255,215,0,0.3);
+}
+
+/* Loot Popup — centered in viewport */
+.loot-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOverlay 0.2s ease;
+}
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+.loot-popup {
+  background: var(--bg-secondary);
+  border-radius: 24px;
+  border: 1px solid rgba(255,215,0,0.2);
+  padding: 32px;
+  width: 380px;
+  max-width: 90vw;
+  text-align: center;
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+  animation: popupIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes popupIn {
+  from { transform: scale(0.8) translateY(20px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+.loot-title { font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #ffd700; margin-bottom: 20px; text-shadow: 0 0 15px rgba(255,215,0,0.5); }
+.loot-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.loot-item {
+  font-size: 15px; font-weight: 600; color: var(--text-primary);
+  padding: 8px 12px; border-radius: 8px;
+  background: rgba(255,215,0,0.05);
+  animation: lootItemAppear 0.3s ease-out both;
+}
+.loot-item.rare      { color: #ffd700; background: rgba(255,215,0,0.1);  text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+.loot-item.legendary { color: #ff6b35; background: rgba(255,107,53,0.1); text-shadow: 0 0 10px rgba(255,107,53,0.3); font-size: 19px; }
+@keyframes lootItemAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.loot-close-btn {
+  padding: 10px 30px; border-radius: 12px;
+  border: 1px solid rgba(255,215,0,0.3);
+  background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,165,0,0.1));
+  color: #ffd700; font-weight: 600; font-size: 14px; cursor: pointer;
+  transition: all 0.3s ease;
+}
+.loot-close-btn:hover { box-shadow: 0 0 20px rgba(255,215,0,0.3); }
