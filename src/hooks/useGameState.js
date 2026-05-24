@@ -20,9 +20,6 @@ function makeDefaultState() {
     unlockedAchievements: [],
     lastSaveTime: Date.now(),
     totalTimePlayedMs: 0,
-    ownedSkins: ['default'],
-    currentSkin: 'default',
-    customSkinColors: { body: '#00AA00', face: '#000000' },
     mods: { active: false, clickerImage: null, keyColor: '#ffd700', name: null, importedAt: null },
     accessories: [],
     minigamesUnlocked: false,
@@ -40,12 +37,11 @@ function makeDefaultState() {
 
 function mergeState(saved) {
   const def = makeDefaultState();
-  return {
+  const merged = {
     ...def,
     ...saved,
     dailyStreak:      { ...def.dailyStreak,      ...(saved.dailyStreak      || {}) },
     settings:         { ...def.settings,          ...(saved.settings         || {}) },
-    customSkinColors: saved.customSkinColors      ?? def.customSkinColors,
     mods:             { ...def.mods,              ...(saved.mods             || {}) },
     accessories:      saved.accessories           ?? def.accessories,
     unlockedGames:    saved.unlockedGames         ?? def.unlockedGames,
@@ -60,6 +56,11 @@ function mergeState(saved) {
       return { ...du, level: su.level ?? du.level, cost: su.cost ?? du.cost };
     }),
   };
+  // Cleanup legacy skin params if they exist
+  delete merged.ownedSkins;
+  delete merged.currentSkin;
+  delete merged.customSkinColors;
+  return merged;
 }
 
 async function saveToStorage(state) {
@@ -92,7 +93,6 @@ export function useGameState() {
   const sessionStart      = useRef(Date.now());
   const loadedOnce        = useRef(false);
 
-  // Load on mount (async) — run only once
   useEffect(() => {
     if (loadedOnce.current) return;
     loadedOnce.current = true;
@@ -102,7 +102,6 @@ export function useGameState() {
     });
   }, []);
 
-  // Persist whenever gs changes (debounced 2 s)
   const saveTimer = useRef(null);
   useEffect(() => {
     if (!ready) return;
@@ -122,7 +121,6 @@ export function useGameState() {
     return toSave;
   }, []);
 
-  // Autosave every 10 s
   useEffect(() => {
     if (!ready) return;
     const id = setInterval(() => {
@@ -157,7 +155,6 @@ export function useGameState() {
     setGS(prev => ({ ...prev, dailyStreak: checkDailyStreak(prev.dailyStreak) }));
   }, [checkDailyStreak, ready]);
 
-  // Midnight reset
   useEffect(() => {
     const scheduleReset = () => {
       const msUntilMidnight = getNextMidnight() - Date.now();

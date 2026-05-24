@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSkinSVG } from '../utils/skins.jsx';
+import { getDefaultHedronSVG } from '../utils/skins.jsx';
 import './ClickerArea.css';
 import './WeatherLayer.css';
 
@@ -29,7 +29,7 @@ export default function ClickerArea({
           {modClickerImage ? (
             <img className="mod-clicker-image" src={modClickerImage} alt="" />
           ) : (
-            getSkinSVG(gs.currentSkin, gs.customSkinColors)
+            getDefaultHedronSVG()
           )}
 
           {isBurning && (

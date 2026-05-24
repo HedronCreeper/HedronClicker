@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { SKINS } from '../constants';
 import { formatNumber, GEMS_TO_POINTS } from '../utils/helpers';
-import { getSkinSVG } from '../utils/skins.jsx';
+import { getDefaultHedronSVG } from '../utils/skins.jsx';
 import UpgradesTab from './UpgradesTab.jsx';
 import StatsTab from './StatsTab.jsx';
 import CratesTab from './CratesTab.jsx';
@@ -9,8 +8,8 @@ import AccessoriesTab from './AccessoriesTab.jsx';
 import AchievementsTab from './AchievementsTab.jsx';
 import './RightPanel.css';
 
-const TABS       = ['upgrades', 'stats', 'crates', 'skins', 'gear', 'achievements'];
-const TAB_LABELS = ['Upgrades', 'Stats', 'Crates', 'Skins', 'Gear', 'Achievements'];
+const TABS       = ['upgrades', 'stats', 'crates', 'gear', 'achievements'];
+const TAB_LABELS = ['Upgrades', 'Stats', 'Crates', 'Gear', 'Achievements'];
 
 export default function RightPanel({
   gs, setGS, showToast,
@@ -20,35 +19,6 @@ export default function RightPanel({
 }) {
   const [activeTab, setActiveTab] = useState('upgrades');
   const [loot, setLoot] = useState(null);
-  const [customBody, setCustomBody] = useState(gs.customSkinColors?.body || '#00AA00');
-  const [customFace, setCustomFace] = useState(gs.customSkinColors?.face || '#000000');
-
-  function buySkin(skin) {
-    if (gs.points >= skin.cost) {
-      setGS(prev => ({
-        ...prev,
-        points: prev.points - skin.cost,
-        ownedSkins: [...prev.ownedSkins, skin.id],
-      }));
-      showToast('🎨 Skin purchased: ' + skin.name, 'success');
-    } else {
-      showToast('❌ Not enough points!', 'error');
-    }
-  }
-
-  function equipSkin(id) {
-    setGS(prev => ({ ...prev, currentSkin: id }));
-    showToast('🎨 Skin equipped!', 'success');
-  }
-
-  function applyCustomSkin() {
-    setGS(prev => ({
-      ...prev,
-      currentSkin: 'custom',
-      customSkinColors: { body: customBody, face: customFace },
-    }));
-    showToast('🎨 Custom skin applied!', 'success');
-  }
 
   function openCrate() {
     if (gs.crateKeys < 3) return;
@@ -69,7 +39,6 @@ export default function RightPanel({
     setLoot(lootItems);
   }
 
-  // Gems shop helpers
   function buyGems(amount) {
     const cost = amount * GEMS_TO_POINTS;
     if (gs.points < cost) { showToast('❌ Not enough points!', 'error'); return; }
@@ -79,7 +48,6 @@ export default function RightPanel({
 
   return (
     <div className="right-panel">
-      {/* Gem display */}
       <div className="gem-bar">
         <span className="gem-bar-icon">💎</span>
         <span className="gem-bar-count">{gs.gems || 0} Gems</span>
@@ -109,67 +77,6 @@ export default function RightPanel({
 
       {activeTab === 'crates' && (
         <CratesTab gs={gs} openCrate={openCrate} loot={loot} setLoot={setLoot} />
-      )}
-
-      {activeTab === 'skins' && (
-        <div className="tab-content-inner">
-          <div className="panel-header">🎨 Skins</div>
-          {/* Gem shop in skins tab */}
-          <div className="gem-shop-panel">
-            <div className="gem-shop-title">💎 Buy Gems</div>
-            <div className="gem-shop-row">
-              {[1,5,10].map(n => (
-                <button
-                  key={n}
-                  className={`gem-buy-btn${gs.points < n * GEMS_TO_POINTS ? ' cant-afford' : ''}`}
-                  onClick={() => buyGems(n)}
-                >
-                  {n} 💎<br/>
-                  <span className="gem-buy-cost">{formatNumber(n * GEMS_TO_POINTS)} pts</span>
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="skin-grid">
-            {SKINS.map(skin => {
-              const owned  = gs.ownedSkins.includes(skin.id);
-              const active = gs.currentSkin === skin.id;
-              return (
-                <div
-                  key={skin.id}
-                  className={`skin-card${active ? ' active' : ''}${!owned ? ' locked' : ''}`}
-                  onClick={() => {
-                    if (!owned) buySkin(skin);
-                    else if (skin.id !== 'custom') equipSkin(skin.id);
-                  }}
-                >
-                  <div className="skin-preview">{getSkinSVG(skin.id, gs.customSkinColors)}</div>
-                  <div className="skin-name">{skin.name}</div>
-                  {owned ? (
-                    <>
-                      <div className="skin-owned">Owned</div>
-                      {skin.id === 'custom' && (
-                        <div className="custom-editor" onClick={e => e.stopPropagation()}>
-                          <div className="color-picker-row">
-                            <span className="color-picker-label">Body</span>
-                            <input type="color" value={customBody} onChange={e => setCustomBody(e.target.value)} />
-                          </div>
-                          <div className="color-picker-row">
-                            <span className="color-picker-label">Face</span>
-                            <input type="color" value={customFace} onChange={e => setCustomFace(e.target.value)} />
-                          </div>
-                          <button className="apply-skin-btn" onClick={applyCustomSkin}>Apply & Equip</button>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="skin-price">{formatNumber(skin.cost)} pts</div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
       )}
 
       {activeTab === 'gear' && (
