@@ -1,6 +1,4 @@
-/**
- * Achievements definition and checking utility for HedronClicker
- */
+// Achievements definition and checking utility for HedronClicker
 
 export const ACHIEVEMENTS = [
   {
@@ -62,16 +60,6 @@ export const ACHIEVEMENTS = [
     getProgress: (s) => s.upgrades?.[1]?.level || 0,
     condition: (s) => (s.upgrades?.[1]?.level || 0) >= 1,
     applyReward: (s) => ({ ...s, points: s.points + 100 }),
-  },
-  {
-    id: 'faster_clicks_pro_200',
-    title: 'Faster Clicks PRO Master',
-    desc: 'Afford the upgrade Faster Clicks pro 200 times.',
-    rewardText: '1,000,000 pts',
-    target: 200,
-    getProgress: (s) => s.upgrades?.[1]?.level || 0,
-    condition: (s) => (s.upgrades?.[1]?.level || 0) >= 200,
-    applyReward: (s) => ({ ...s, points: s.points + 1000000 }),
   },
   {
     id: 'power_c',
