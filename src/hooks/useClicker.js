@@ -9,6 +9,10 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
   const clickHistoryRef = useRef([]);
   const multiplierRef   = useRef(1.0);
   const isPausedRef     = useRef(false);
+  
+  // Critical hit chain tracking
+  const critChainRef = useRef(0);
+  const maxCritChainRef = useRef(0);
 
   useEffect(() => { isPausedRef.current = isPaused; }, [isPaused]);
 
@@ -51,7 +55,6 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     setCurrentMultiplier(multiplierRef.current);
   }, []);
 
-  // Multiplier decay
   useEffect(() => {
     const id = setInterval(() => {
       const now = Date.now();
@@ -63,8 +66,6 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     }, 100);
     return () => clearInterval(id);
   }, []);
-
-  // ── Boss system ───────────────────────────────────────────────────────────
 
   const startCreeperDamage = useCallback(() => {
     showToast('⚠️ Boss too strong! Creeper taking damage!', 'error');
@@ -81,7 +82,6 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     }, 1000);
   }, [showToast]);
 
-  // Use a ref for scheduleNextBoss so it can self-reference without circular deps
   const scheduleNextBossRef = useRef(null);
   scheduleNextBossRef.current = function scheduleNextBoss() {
     clearTimeout(bossSpawnTimerRef.current);
@@ -132,6 +132,17 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     const baseDamage = gs.clickPower * multiplierRef.current;
     const crit   = isCrit();
     const superCrit = crit && (Math.random() * 100 < (gs.superCritChance || 0));
+    
+    if (crit || superCrit) {
+      critChainRef.current += 1;
+      if (critChainRef.current > maxCritChainRef.current) {
+        maxCritChainRef.current = critChainRef.current;
+        setGS(prev => ({ ...prev, maxCritChain: maxCritChainRef.current }));
+      }
+    } else {
+      critChainRef.current = 0;
+    }
+
     const damage = superCrit ? baseDamage * 10 : (crit ? baseDamage * 2 : baseDamage);
     setBoss(prev => {
       if (!prev) return null;
@@ -167,6 +178,17 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     const base   = gs.clickPower * multiplierRef.current;
     const crit   = isCrit();
     const superCrit = crit && (Math.random() * 100 < (gs.superCritChance || 0));
+    
+    if (crit || superCrit) {
+      critChainRef.current += 1;
+      if (critChainRef.current > maxCritChainRef.current) {
+        maxCritChainRef.current = critChainRef.current;
+        setGS(prev => ({ ...prev, maxCritChain: maxCritChainRef.current }));
+      }
+    } else {
+      critChainRef.current = 0;
+    }
+
     const gained = superCrit ? base * 10 : (crit ? base * 2 : base);
     setGS(prev => ({
       ...prev,
@@ -186,7 +208,6 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     }
   }, [updateMultiplier, isBossActive, hitBoss, gs.clickPower, gs.superCritChance, isCrit, setGS, addFloatText, showCritFlash]);
 
-  // Auto-clicker — pauses when minigames open
   useEffect(() => {
     const id = setInterval(() => {
       if (isPausedRef.current || isBossActive) return;
@@ -199,7 +220,6 @@ export function useClicker(gs, setGS, showToast, isPaused = false) {
     return () => clearInterval(id);
   }, [isBossActive, setGS]);
 
-  // Mount — schedule first boss, clean up on unmount
   const mountedRef = useRef(false);
   useEffect(() => {
     if (mountedRef.current) return;

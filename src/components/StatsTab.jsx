@@ -23,6 +23,10 @@ export default function StatsTab({ gs, isBossActive }) {
           <div className="stat-row-value">{formatTime(totalMs)}</div>
         </div>
         <div className="stat-row">
+          <div className="stat-row-label">Max Crit Chain</div>
+          <div className="stat-row-value">{gs.maxCritChain || 0}</div>
+        </div>
+        <div className="stat-row">
           <div className="stat-row-label">Bosses Defeated</div>
           <div className="stat-row-value">{gs.bossesDefeated}</div>
         </div>
