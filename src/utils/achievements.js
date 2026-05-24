@@ -1,6 +1,4 @@
-/**
- * Achievements definition and checking utility for HedronClicker
- */
+// Achievements definition and checking utility for HedronClicker
 
 export const ACHIEVEMENTS = [
   {
@@ -64,16 +62,6 @@ export const ACHIEVEMENTS = [
     applyReward: (s) => ({ ...s, points: s.points + 100 }),
   },
   {
-    id: 'faster_clicks_pro_200',
-    title: 'Faster Clicks PRO Master',
-    desc: 'Afford the upgrade Faster Clicks pro 200 times.',
-    rewardText: '1,000,000 pts',
-    target: 200,
-    getProgress: (s) => s.upgrades?.[1]?.level || 0,
-    condition: (s) => (s.upgrades?.[1]?.level || 0) >= 200,
-    applyReward: (s) => ({ ...s, points: s.points + 1000000 }),
-  },
-  {
     id: 'power_c',
     title: 'Power C',
     desc: 'Reach click power 100. Every single click packs a punch!',
@@ -93,6 +81,16 @@ export const ACHIEVEMENTS = [
     condition: (s) => (s.cratesOpened || 0) >= 100,
     applyReward: (s) => ({ ...s, points: s.points + 1000000 }),
   },
+  {
+    id: 'faster_clicks_pro',
+    title: 'Faster Clicks PRO',
+    desc: 'Afford the upgrade Faster Clicks Pro 200 times.',
+    rewardText: '1M points',
+    target: 200,
+    getProgress: (s) => s.upgrades?.find(u => u.name === 'Faster Clicks Pro')?.level || 0,
+    condition: (s) => (s.upgrades?.find(u => u.name === 'Faster Clicks Pro')?.level || 0) >= 200,
+    applyReward: (s) => ({ ...s, points: s.points + 1000000 }),
+  }
 ];
 
 export function checkAchievements(gs, setGS, onUnlock) {
