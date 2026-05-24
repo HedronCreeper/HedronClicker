@@ -15,7 +15,6 @@ export default function ClickerArea({
 
   return (
     <div className="clicker-boss-area">
-      {/* Clicker */}
       <div className="clicker-wrapper">
         <div className="clicker-ring r1" />
         <div className="clicker-ring r2" />
@@ -25,6 +24,7 @@ export default function ClickerArea({
           className={`hedron-btn${isShrunken ? ' shrunken' : ''}`}
           onClick={handleClick}
           aria-label="Click to earn points"
+          style={{ borderRadius: '50%', overflow: 'hidden' }}
         >
           {modClickerImage ? (
             <img className="mod-clicker-image" src={modClickerImage} alt="" />
@@ -32,7 +32,6 @@ export default function ClickerArea({
             getSkinSVG(gs.currentSkin, gs.customSkinColors)
           )}
 
-          {/* Fire overlay when burning */}
           {isBurning && (
             <div className="fire-overlay">
               <div className="flame f1" />
@@ -65,7 +64,6 @@ export default function ClickerArea({
         <div className="multiplier-text">x{currentMultiplier.toFixed(1)}</div>
       </div>
 
-      {/* Boss */}
       {isBossActive && boss && (
         <div className={`boss-container${bossShake ? ' shake' : ''}${bossDying ? ' dying' : ''}`}>
           <div className="boss-label">⚔ BOSS ⚔</div>

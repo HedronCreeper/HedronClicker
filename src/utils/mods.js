@@ -98,29 +98,21 @@ function isSafeCssColor(value) {
 export async function parseModZip(file) {
   const entries = await readZipEntries(file);
   const configBytes = getEntry(entries, 'config.txt');
-  const imageBytes = getEntry(entries, 'clicker_image.png');
 
   if (!configBytes) throw new Error('Missing config.txt inside the mod folder.');
-  if (!imageBytes) throw new Error('Missing clicker_image.png inside the mod folder.');
 
   const config = parseConfig(TEXT_DECODER.decode(configBytes));
   const keyColor = config.key_colour;
+  const pointsColor = config.points_colour;
+
   if (!isSafeCssColor(keyColor)) {
     throw new Error('config.txt must include key_colour: "green" or another valid CSS color.');
   }
 
-  const blob = new Blob([imageBytes], { type: 'image/png' });
-  const clickerImage = await new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(new Error('Could not read clicker_image.png.'));
-    reader.readAsDataURL(blob);
-  });
-
   return {
     active: true,
-    clickerImage,
     keyColor,
+    pointsColor: isSafeCssColor(pointsColor) ? pointsColor : null,
     name: file.name.replace(/\.zip$/i, ''),
     importedAt: Date.now(),
   };

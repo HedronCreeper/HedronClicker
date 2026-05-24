@@ -23,7 +23,6 @@ export default function App() {
 
   const [showMinigames, setShowMinigames] = useState(false);
 
-  // Achievement Toast Notification Queue
   const [achievementNotif, setAchievementNotif] = useState(null);
   const notifQueueRef = useRef([]);
   const notifTimeoutRef = useRef(null);
@@ -47,23 +46,21 @@ export default function App() {
     processNotifQueue();
   }, [processNotifQueue]);
 
-  // Check achievements whenever relevant state changes
   useEffect(() => {
     if (!ready) return;
     checkAchievements(gs, setGS, triggerAchievementToast);
   }, [gs.totalClicks, gs.clickPower, gs.cratesOpened, gs.upgrades, ready, triggerAchievementToast]);
 
-  // Clean up timers on unmount
   useEffect(() => {
     return () => {
       clearTimeout(notifTimeoutRef.current);
     };
   }, []);
 
-  const {
-    currentMultiplier, floatTexts, critFlash, handleClick,
-    boss, isBossActive, bossShake, bossDying,
-    creeperHP, setCreeperHP, creeperHPRef,
+  const { 
+    currentMultiplier, floatTexts, critFlash, handleClick, 
+    boss, isBossActive, bossShake, bossDying, 
+    creeperHP, setCreeperHP, creeperHPRef, 
   } = useClicker(gs, setGS, showToast, showMinigames);
 
   const hasCapAccessory = Array.isArray(gs.accessories) && gs.accessories.includes('cap');
@@ -82,16 +79,15 @@ export default function App() {
   const [autosave,     setAutosave]     = useState(false);
   const autosaveTimer = useRef(null);
 
-  // Apply theme on mount + whenever settings change
   useEffect(() => {
     if (!ready) return;
     const vars = THEME_VARS[gs.settings.theme] || THEME_VARS.default;
     applyCSSVars(vars);
     document.body.classList.toggle('fps-boost', gs.settings.fpsBoost === 'on');
     document.documentElement.style.setProperty('--mod-key-color', gs.mods?.keyColor || '#ffd700');
-  }, [gs.settings.theme, gs.settings.fpsBoost, gs.mods?.keyColor, ready]);
+    document.documentElement.style.setProperty('--mod-points-color', gs.mods?.pointsColor || 'transparent');
+  }, [gs.settings.theme, gs.settings.fpsBoost, gs.mods?.keyColor, gs.mods?.pointsColor, ready]);
 
-  // Offline income — intentionally only runs once after ready
   const offlineChecked = useRef(false);
   useEffect(() => {
     if (!ready || offlineChecked.current) return;
@@ -100,7 +96,6 @@ export default function App() {
     if (amt > 0) setOfflineAmt(amt);
   }, [ready, getOfflineIncome, gs]);
 
-  // Autosave indicator flash every 10 s
   useEffect(() => {
     const id = setInterval(() => {
       setAutosave(true);
@@ -124,12 +119,7 @@ export default function App() {
 
   if (!ready) {
     return (
-      <div style={{
-        background: '#0a0a1a', minHeight: '100vh',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontFamily: 'Orbitron, sans-serif', color: '#00f0ff',
-        fontSize: '16px', letterSpacing: '4px',
-      }}>
+      <div style={{ background: '#0a0a1a', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Orbitron, sans-serif', color: '#00f0ff', fontSize: '16px', letterSpacing: '4px' }}>
         ⏳ Decrypting save...
       </div>
     );
@@ -182,7 +172,7 @@ export default function App() {
           <div className="points-display">
             <div className="keys-display"><span className="key-icon">🔑</span> {gs.crateKeys} Key{gs.crateKeys !== 1 ? 's' : ''}</div>
             <div className="points-label">Points</div>
-            <div className="points-value">{formatNumber(gs.points)}</div>
+            <div className="points-value" style={{ color: gs.mods?.pointsColor || 'inherit' }}>{formatNumber(gs.points)}</div>
           </div>
 
           <ClickerArea
@@ -226,7 +216,6 @@ export default function App() {
 
       <div className={`autosave-indicator${autosave ? ' show' : ''}`}>💾 Auto-saving...</div>
 
-      {/* Premium Achievement Toast */}
       {achievementNotif && (
         <div className="achievement-toast show">
           <div className="ach-toast-glow" />
