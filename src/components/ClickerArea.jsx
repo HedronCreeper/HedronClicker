@@ -27,7 +27,7 @@ export default function ClickerArea({
           style={{ borderRadius: '50%', overflow: 'hidden' }}
         >
           {modClickerImage ? (
-            <img className="mod-clicker-image" src={modClickerImage} alt="" />
+            <img className="mod-clicker-image" src="/images/clicker_image.png" alt="" />
           ) : (
             getDefaultHedronSVG()
           )}
