@@ -1,0 +1,24 @@
+@import './DailyModal.css';
+
+.offline-box { text-align: center; }
+.offline-icon { font-size: 64px; margin-bottom: 18px; animation: offlinePulse 2s ease-in-out infinite; }
+@keyframes offlinePulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+.offline-text   { font-size: 15px; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5; }
+.offline-amount {
+  font-family: 'Orbitron', sans-serif; font-size: 30px; font-weight: 700;
+  color: #ffd700; text-shadow: 0 0 20px rgba(255,215,0,0.5); margin-bottom: 25px;
+}
+.claim-btn {
+  padding: 14px 40px; border-radius: 14px;
+  border: 1px solid rgba(255,215,0,0.4);
+  background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
+  color: #ffd700;
+  font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 15px;
+  text-transform: uppercase; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(255,215,0,0.2);
+}
+.claim-btn:hover {
+  background: linear-gradient(135deg, rgba(255,215,0,0.4), rgba(255,165,0,0.2));
+  box-shadow: 0 0 40px rgba(255,215,0,0.4); transform: translateY(-2px);
+}

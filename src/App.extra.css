@@ -1,0 +1,116 @@
+/* Appended styles — minigames button + security note */
+
+/* Minigames button */
+.minigames-btn {
+  color: var(--accent-3);
+  border-color: rgba(123,47,255,0.3);
+  font-size: 20px;
+}
+.minigames-btn:hover {
+  border-color: var(--accent-3);
+  box-shadow: 0 0 20px rgba(123,47,255,0.4);
+  transform: scale(1.1);
+}
+
+/* Security note in settings */
+.save-security-note {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 8px 12px;
+  background: rgba(0,240,255,0.04);
+  border: 1px solid rgba(0,240,255,0.1);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+/* ── Premium Achievement Toast ── */
+.achievement-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  z-index: 9999;
+  width: 330px;
+  background: rgba(10, 10, 26, 0.9);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 215, 0, 0.25);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.achievement-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.ach-toast-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.18), transparent 70%);
+  pointer-events: none;
+}
+
+.ach-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+}
+
+.ach-toast-icon-box {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 107, 53, 0.25));
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+  animation: trophySpin 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  flex-shrink: 0;
+}
+
+.ach-toast-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.ach-toast-unlocked {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.55);
+}
+
+.ach-toast-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.ach-toast-reward {
+  font-size: 11px;
+  color: #66ff88;
+  font-weight: 600;
+  text-shadow: 0 0 6px rgba(0, 255, 100, 0.2);
+}
+
+@keyframes trophySpin {
+  0% { transform: scale(0) rotate(-180deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}

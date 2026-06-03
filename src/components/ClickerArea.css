@@ -1,0 +1,201 @@
+.clicker-boss-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  position: relative;
+  animation: fadeIn 1s ease-out 0.3s both;
+}
+
+.clicker-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.clicker-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  pointer-events: none;
+}
+.clicker-ring.r1 {
+  width: 280px; height: 280px;
+  border-top-color: var(--accent-1);
+  border-right-color: var(--accent-2);
+  animation: spinRing 4s linear infinite;
+}
+.clicker-ring.r2 {
+  width: 300px; height: 300px;
+  border-top-color: var(--accent-3);
+  border-left-color: var(--accent-1);
+  animation: spinRing 6s linear infinite reverse;
+}
+.clicker-ring.r3 {
+  width: 320px; height: 320px;
+  border-bottom-color: var(--accent-2);
+  border-right-color: var(--accent-3);
+  animation: spinRing 8s linear infinite;
+  opacity: 0.5;
+}
+@keyframes spinRing { to { transform: rotate(360deg); } }
+
+.hedron-btn {
+  position: relative;
+  width: 220px; height: 220px;
+  background: none; border: none; cursor: pointer; outline: none;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  z-index: 2;
+  -webkit-tap-highlight-color: transparent;
+}
+.hedron-btn:hover  { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(0,240,255,0.6)); }
+.hedron-btn:active { transform: scale(0.92); filter: drop-shadow(0 0 60px rgba(255,0,229,0.8)); }
+.hedron-btn svg {
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 0 20px rgba(0,240,255,0.4));
+  animation: creeperPulse 3s ease-in-out infinite;
+  transition: filter 0.3s ease;
+}
+.hedron-btn:hover svg { filter: drop-shadow(0 0 35px rgba(0,240,255,0.7)); animation: none; }
+.mod-clicker-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(0,240,255,0.4));
+  animation: creeperPulse 3s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+}
+.hedron-btn:hover .mod-clicker-image {
+  filter: drop-shadow(0 0 35px rgba(0,240,255,0.7));
+  animation: none;
+}
+@keyframes creeperPulse {
+  0%,100% { filter: drop-shadow(0 0 20px rgba(0,240,255,0.4)); }
+  50%      { filter: drop-shadow(0 0 35px rgba(0,240,255,0.6)); }
+}
+
+/* Creeper HP */
+.creeper-hp-container {
+  position: absolute;
+  bottom: -30px; left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  z-index: 5;
+}
+.creeper-hp-bar-bg {
+  width: 100%; height: 8px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.creeper-hp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff00, #00cc00);
+  border-radius: 4px;
+  transition: width 0.3s ease, background 0.3s ease;
+  box-shadow: 0 0 8px rgba(0,255,0,0.5);
+}
+.creeper-hp-bar-fill.low {
+  background: linear-gradient(90deg, #ff0000, #cc0000);
+  box-shadow: 0 0 8px rgba(255,0,0,0.5);
+}
+.creeper-hp-text      { font-family: 'Orbitron', sans-serif; font-size: 10px; color: #00ff00; text-shadow: 0 0 5px rgba(0,255,0,0.5); }
+.creeper-hp-text.low  { color: #ff0000; text-shadow: 0 0 5px rgba(255,0,0,0.5); }
+
+/* Multiplier bar */
+.multiplier-bar-container {
+  position: absolute; right: -40px; top: 50%; transform: translateY(-50%);
+  width: 12px; height: 200px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  z-index: 1;
+}
+.multiplier-bar-fill {
+  position: absolute; bottom: 0; left: 0; width: 100%;
+  background: var(--accent-1);
+  box-shadow: 0 0 10px var(--accent-1);
+  transition: height 0.15s ease-out;
+  border-radius: 0 0 6px 6px;
+}
+.multiplier-text {
+  position: absolute; right: -35px; top: 50%; transform: translateY(-50%);
+  font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--accent-1); text-shadow: 0 0 5px var(--accent-1);
+  white-space: nowrap;
+}
+
+/* Boss */
+.boss-container {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  animation: bossAppear 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+  flex-shrink: 0;
+}
+@keyframes bossAppear {
+  from { opacity: 0; transform: scale(0.3) translateX(50px); }
+  to   { opacity: 1; transform: scale(1) translateX(0); }
+}
+.boss-container.shake .boss-symbol { animation: bossShake 0.15s ease; }
+@keyframes bossShake {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-8px) rotate(-5deg); }
+  75%     { transform: translateX(8px)  rotate(5deg); }
+}
+.boss-container.dying {
+  animation: bossDeath 0.8s ease-out forwards;
+}
+@keyframes bossDeath {
+  0%   { transform: scale(1);   opacity: 1; filter: brightness(1); }
+  50%  { transform: scale(1.3); opacity: 0.8; filter: brightness(3); }
+  100% { transform: scale(0);   opacity: 0; filter: brightness(5); }
+}
+.boss-symbol {
+  font-size: 72px;
+  animation: bossFloat 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255,50,50,0.6));
+}
+@keyframes bossFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
+}
+.boss-name   { font-family: 'Orbitron', sans-serif; font-size: 16px; font-weight: 700; color: #ff4444; text-shadow: 0 0 15px rgba(255,50,50,0.5); letter-spacing: 2px; }
+.boss-label  { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: #ff4444; opacity: 0.7; }
+.boss-health-bar-wrapper { width: 180px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.boss-health-bar-bg {
+  width: 100%; height: 14px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 7px; overflow: hidden;
+  border: 1px solid rgba(255,50,50,0.3);
+}
+.boss-health-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff0000, #ff4444, #ff6666);
+  border-radius: 7px;
+  transition: width 0.2s ease;
+  box-shadow: 0 0 10px rgba(255,0,0,0.4);
+}
+.boss-health-text { font-family: 'Orbitron', sans-serif; font-size: 12px; color: #ff6666; text-shadow: 0 0 8px rgba(255,50,50,0.4); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Rain shrink — button gets visually smaller, harder to click */
+.hedron-btn.shrunken {
+  transform: scale(0.5) !important;
+  transition: transform 1.5s ease !important;
+  cursor: crosshair;
+}
+.hedron-btn.shrunken:hover  { transform: scale(0.52) !important; }
+.hedron-btn.shrunken:active { transform: scale(0.46) !important; }
+
+@media (max-width: 900px) {
+  .clicker-boss-area { flex-direction: column; gap: 20px; }
+  .multiplier-bar-container,
+  .multiplier-text { display: none; }
+}

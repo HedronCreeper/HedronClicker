@@ -1,0 +1,46 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.stat-row {
+  background: var(--bg-panel);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.stat-row-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.stat-row-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-1);
+}
+.panel-header {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 3px;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, var(--bg-panel), rgba(123,47,255,0.15));
+  border-radius: 16px;
+  border: 1px solid rgba(123,47,255,0.2);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.panel-header::after {
+  content: '';
+  position: absolute; top: 0; left: -100%; width: 200%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(50%); }
+}
